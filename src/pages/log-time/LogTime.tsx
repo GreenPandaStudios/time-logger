@@ -1,83 +1,77 @@
-import React from 'react'
+import React, { useCallback, useState, useMemo } from 'react'
 
-import {Form, Button} from "react-bootstrap"
-import { IActivity,IPerson, IPlace } from '../../types'
+import {Form, Button, Container} from "react-bootstrap"
+import { IActivity,IPerson, IPlace, IExperience } from '../../types'
 import { ActivitySelect } from './ActivitySelect'
 import { PlaceSelect } from './PlaceSelect'
 import { PersonSelect } from './PersonSelect'
+import { useAppDispatch } from '../../app/hooks'
+import { addExperience } from '../../state/experiences/experience-slice'
+
+interface IExperienceLog {
+  activity?: IActivity;
+  place?: IPlace;
+  people?: IPerson[];
+}
+
+
 
 export const LogTime = ()=> {
+
+
+  const [currentExperience, setCurrentExperience] = useState<IExperienceLog>({})
+
+  const getCurrentAsExperience: IExperience = useMemo(()=>{
+    return {
+      activity: currentExperience.activity,
+      place: currentExperience.place,
+      people: currentExperience.people,
+      start: Date.now()
+    } as IExperience
+  }, [currentExperience])
+
+
+  const dispatch = useAppDispatch();
+
+  const onActivityChange = useCallback((activity: IActivity) =>{
+    setCurrentExperience({...currentExperience,
+      activity: activity
+    })
+  }, [currentExperience])
+
+  const onPlaceChange = useCallback((place: IPlace) =>{
+    setCurrentExperience({...currentExperience,
+      place: place
+    })
+  }, [currentExperience])
+
+  const onPeopleChange = useCallback((people: IPerson[]) =>{
+    setCurrentExperience({...currentExperience,
+      people: people
+    })
+  }, [currentExperience])
+
+  const canSubmit = useMemo(() =>{
+    return currentExperience.activity !== undefined && currentExperience.place !== undefined;
+  },[currentExperience])
+
+  const onSubmit = useCallback(() =>{
+    dispatch(addExperience({experience: getCurrentAsExperience}))
+    setCurrentExperience({} as IExperienceLog);
+  },[dispatch, addExperience, getCurrentAsExperience])
+
   return (
-    <Form>
-      <span>
-        I am {" "}
-        <ActivitySelect activities={getActivities()} createNewActivity= {createNewActivity}/>
-        {" "} at {" "}
-        <PlaceSelect places={getPlaces()} createNewPlace= {createNewPlace}/>
-        <PersonSelect people={getPeople()} createNewPerson= {createNewPerson}/>
-      </span>
-      <Button type="submit">Submit form</Button>
+    <Form onSubmit={onSubmit}>
+      <Container>
+        <span>
+          I am {" "}
+          <ActivitySelect  onChange= {onActivityChange} />
+          {" "} at {" "}
+          <PlaceSelect  onChange= {onPlaceChange}/>
+          <PersonSelect onChange= {onPeopleChange}/>
+        </span>
+      </Container>
+      <Button type="submit" disabled={!canSubmit}>Submit form</Button>
     </Form> 
   )
 }
-
-const createNewActivity = (a: IActivity)=> { }
-const getActivities = ():IActivity[] => {
-  return [
-    {
-      id: "1",
-      description: "getting ready for work"
-    },
-    {
-      id: "2",
-      description: "working"
-    },
-    {
-      id: "3",
-      description: "eating"
-    },
-    {
-      id: "4",
-      description: "sleeping"
-    },
-    {
-      id: "5",
-      description: "working out"
-    }
-  ]
-}
-const createNewPerson = (a: IPerson): void => {}
-const createNewPlace = (a: IPlace): void => {}
-const getPlaces = ():IPlace[] => { return [
-  {
-    id: "1",
-    description: "home"
-  },
-  {
-    id: "2",
-    description: "work"
-  },
-  {
-    id: "3",
-    description: "school"
-  },
-  {
-    id: "4",
-    description: "gym"
-  }
-]};
-
-const getPeople = ():IPerson[] => { return [
-  {
-    id: "1",
-    name: "August"
-  },
-  {
-    id: "2",
-    name: "Ellie"
-  },
-  {
-    id: "3",
-    name: "Shane"
-  }
-]};

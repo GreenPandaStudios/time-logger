@@ -1,49 +1,82 @@
 import React, {useCallback, useMemo, useState} from 'react'
-import { IPerson } from '../../types';
+import { IHaveId, IPerson } from '../../types';
 import { Form, Button } from 'react-bootstrap';
+import { useAppSelector } from '../../app/hooks';
+import { getAllPeople } from '../../state/people/people-slice';
 
 interface IProps {
-    people: IPerson[];
-    createNewPerson: (person: IPerson) => void;
+    onChange: (person: (IPerson & IHaveId)[]) => void;
 }
 
 export const PersonSelect = (props: IProps) => {
 
-    const [numberOfPeople, setNumberOfPeople] = useState<IProps[]>([])
+    const [selectedPeople, setSelectedPeople] = useState<(IPerson | undefined)[]>([])
 
-    const {people, createNewPerson} = props
-    const addPerson = useCallback(() => setNumberOfPeople([...numberOfPeople, props]) ,[setNumberOfPeople, numberOfPeople])
+    const people = useAppSelector(getAllPeople)
+    const {onChange} = props
+
+    const addPerson = useCallback(() =>  {
+        setSelectedPeople([...selectedPeople, undefined])
+    
+    },[setSelectedPeople, selectedPeople])
+    const removePerson = useCallback(() => {
+        if (selectedPeople.length === 1) {
+            setSelectedPeople([]);
+            return;
+        }
+        setSelectedPeople(selectedPeople.slice(0,selectedPeople.length-1))
+    },[setSelectedPeople, selectedPeople]);
+
+    
+    const onPersonSelectChange = useCallback((
+        person:IPerson & IHaveId,
+        index: number
+    ) => {
+        let newSelectedPeople = [...selectedPeople]
+        newSelectedPeople[index] = person;
+        setSelectedPeople(newSelectedPeople)
+        onChange(newSelectedPeople.filter(p => p !== undefined) as (IPerson & IHaveId)[])
+    },[selectedPeople, setSelectedPeople, onChange]);
+
+
+    const selectorMap = useMemo(()=>selectedPeople.map(
+        (_, index)=> 
+        <PersonSelector onChange={(p:IPerson & IHaveId) => onPersonSelectChange(p, index)} people={Object.values(people)} prefix = {index === 0 ? " with" : " and"} key={index}/>
+    ),[selectedPeople, setSelectedPeople, onPersonSelectChange])
 
         return (
         <>
-            {
-                numberOfPeople.map(
-                    (person, index)=> 
-                    <PersonSelector {...person} prefix = {index === 0 ? " with" : " and"} key={index}/>
-                )
-            }
-            <Button onClick={addPerson}>{numberOfPeople.length === 0 ? " with ..." : " and ..."}</Button>
+            {selectorMap}
+            <Button onClick={addPerson}>{selectedPeople.length === 0 ? " with ..." : " and ..."}</Button>
+            {selectedPeople.length > 0 && <Button onClick={removePerson}>Remove</Button>}
         </>
     )
 }
 
-interface IPersonSelectorProps extends IProps {
+interface IPersonSelectorProps {
     prefix: string;
+    people: (IPerson & IHaveId)[];
+    onChange: (person: (IPerson & IHaveId)) => void;
 }
 
 const PersonSelector = (props: IPersonSelectorProps) => {
+    
+    const {people, prefix, onChange} = props
 
-    const {people, createNewPerson, prefix} = props
+    const onOptionChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
+        onChange(people.find(person => person.id === event.target.value) as (IPerson & IHaveId));
+     },[onChange, people]);
+
     const mapPeople = useMemo(() => {
-        return people.map(person => {
-            return <option key={person.id} value={person.id}>{person.name}</option>
+        return people.map((person, index) => {
+            return <option key={person.id + "_" + index} value={person.id}>{person.name}</option>
         })
         }, [people])
     
         return (
         <>   
             {prefix +" "}
-            <Form.Select>
+            <Form.Select onChange={onOptionChange}>
                 <option>Choose a person...</option>
                 {mapPeople}
             </Form.Select>
