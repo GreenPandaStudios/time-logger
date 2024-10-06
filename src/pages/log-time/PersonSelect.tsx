@@ -9,77 +9,56 @@ interface IProps {
 }
 
 export const PersonSelect = (props: IProps) => {
-
-    const [selectedPeople, setSelectedPeople] = useState<(IPerson | undefined)[]>([])
-
-    const people = useAppSelector(getAllPeople)
+    const people = useAppSelector(getAllPeople);
     const {onChange} = props
+    const [selectedPeople, setSelectedPeople] = useState<{[id: string]: boolean}>({})
 
-    const addPerson = useCallback(() =>  {
-        setSelectedPeople([...selectedPeople, undefined])
-    
-    },[setSelectedPeople, selectedPeople])
-    const removePerson = useCallback(() => {
-        if (selectedPeople.length === 1) {
-            setSelectedPeople([]);
-            return;
-        }
-        setSelectedPeople(selectedPeople.slice(0,selectedPeople.length-1))
-    },[setSelectedPeople, selectedPeople]);
 
-    
-    const onPersonSelectChange = useCallback((
-        person:IPerson & IHaveId,
-        index: number
+    const onSelectorChange = useCallback((
+        person: IPerson & IHaveId,
+        isSelected: boolean,
     ) => {
-        let newSelectedPeople = [...selectedPeople]
-        newSelectedPeople[index] = person;
-        setSelectedPeople(newSelectedPeople)
-        onChange(newSelectedPeople.filter(p => p !== undefined) as (IPerson & IHaveId)[])
-    },[selectedPeople, setSelectedPeople, onChange]);
+       selectedPeople[person.id] = isSelected
+        onChange(Object.values(people).filter(person => selectedPeople[person.id] === true));
+    },[selectedPeople, setSelectedPeople]);
 
 
-    const selectorMap = useMemo(()=>selectedPeople.map(
-        (_, index)=> 
-        <PersonSelector onChange={(p:IPerson & IHaveId) => onPersonSelectChange(p, index)} people={Object.values(people)} prefix = {index === 0 ? " with" : " and"} key={index}/>
-    ),[selectedPeople, setSelectedPeople, onPersonSelectChange])
+    const selectors = useMemo(() => Object.values(people).map(
+        (person, index) => 
+        <PersonSelector
+            onChange={onSelectorChange}
+            key={index}
+            person={person}
+        />
+    ), [onSelectorChange, people])
 
         return (
         <>
-            {selectorMap}
-            <Button onClick={addPerson}>{selectedPeople.length === 0 ? " with ..." : " and ..."}</Button>
-            {selectedPeople.length > 0 && <Button onClick={removePerson}>Remove</Button>}
+            {selectors}
         </>
     )
 }
 
 interface IPersonSelectorProps {
-    prefix: string;
-    people: (IPerson & IHaveId)[];
-    onChange: (person: (IPerson & IHaveId)) => void;
+    person: IPerson & IHaveId;
+    onChange: ( person: (IPerson & IHaveId), isSelected: boolean) => void;
 }
 
 const PersonSelector = (props: IPersonSelectorProps) => {
     
-    const {people, prefix, onChange} = props
-
-    const onOptionChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-        onChange(people.find(person => person.id === event.target.value) as (IPerson & IHaveId));
-     },[onChange, people]);
-
-    const mapPeople = useMemo(() => {
-        return people.map((person, index) => {
-            return <option key={person.id + "_" + index} value={person.id}>{person.name}</option>
-        })
-        }, [people])
+    const {person, onChange} = props
+    const [isSelected, setIsSelected] = useState(false)
+    const onClick = useCallback(() =>
+        {
+            setIsSelected(!isSelected)
+            onChange(person, !isSelected)
+        },
+    [isSelected, setIsSelected]);
     
         return (
-        <>   
-            {prefix +" "}
-            <Form.Select onChange={onOptionChange}>
-                <option>Choose a person...</option>
-                {mapPeople}
-            </Form.Select>
-        </>
+        <Button onClick={onClick} variant={isSelected ? "secondary" : "outline-secondary"} className="m-2">
+            {person.name}
+            {isSelected && <span className="ms-2">✖</span>}
+        </Button>
     )
 }

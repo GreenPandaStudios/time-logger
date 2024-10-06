@@ -3,6 +3,7 @@ import { useAppSelector } from '../../app/hooks';
 import { getAllExperiences } from '../../state';
 import { ViewExperience } from './ViewExperience';
 import { ListGroup } from 'react-bootstrap';
+import { LogTime } from '../log-time';
 
 export const ViewLog = () => {
 
@@ -16,9 +17,16 @@ export const ViewLog = () => {
             const experience = experiences[experiences.length - 1 - index];
             return <ViewExperience experience={experience} key={experience.id}/>
         })
-    }, [experiences])
+    }, [experiences]);
+
+
   return (
-    <ListGroup>{logView}</ListGroup>
+    <ListGroup>
+      <ListGroup.Item>
+        <LogTime/>
+      </ListGroup.Item>
+      {logView}
+    </ListGroup>
   )
 }
 

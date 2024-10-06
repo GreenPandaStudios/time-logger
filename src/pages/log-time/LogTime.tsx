@@ -31,6 +31,8 @@ export const LogTime = () => {
   }, [currentExperience])
 
 
+
+
   const dispatch = useAppDispatch();
 
   const onActivityChange = useCallback((activity: IActivity) => {
@@ -52,11 +54,26 @@ export const LogTime = () => {
       ...currentExperience,
       people: people
     })
-  }, [currentExperience])
+  }, [currentExperience.activity, currentExperience.place, currentExperience.people])
 
   const canSubmit = useMemo(() => {
     return currentExperience.activity !== undefined && currentExperience.place !== undefined;
-  }, [currentExperience])
+  }, [currentExperience.activity, currentExperience.place])
+
+  const currentString: string | undefined = useMemo(() => {
+
+
+    let experienceString = `${currentExperience.activity?.description} at ${currentExperience.place?.description}`; 
+    
+    if (currentExperience.people && currentExperience.people.length > 0) {
+      let peopleString = currentExperience.people.map((person) => person.name).join(", ");
+      experienceString += ` with ${peopleString}`;
+    }
+    return experienceString;
+
+  },[currentExperience]);
+
+
 
   const onSubmit = useCallback(() => {
     dispatch(addExperience({ experience: getCurrentAsExperience }))
@@ -65,16 +82,16 @@ export const LogTime = () => {
 
   return (
     <Form onSubmit={onSubmit}>
-      <Container>
-        <span>
-          I am {" "}
-          <ActivitySelect onChange={onActivityChange} />
-          {" "} at {" "}
-          <PlaceSelect onChange={onPlaceChange} />
-          <PersonSelect onChange={onPeopleChange} />
-        </span>
+      <ActivitySelect onChange={onActivityChange} />
+      <PlaceSelect onChange={onPlaceChange} />
+      <PersonSelect onChange={onPeopleChange} />
+      <Container className="d-flex justify-content-center mt-3">
+        {canSubmit &&
+        <Button type="submit" disabled={!canSubmit} variant="outline-success" className="w-100">
+          <i className="bi bi-plus"></i> Log "{currentString}"
+        </Button>
+    }
       </Container>
-      <Button type="submit" disabled={!canSubmit}>Submit form</Button>
     </Form>
   )
 }

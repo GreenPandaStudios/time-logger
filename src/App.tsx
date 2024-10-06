@@ -12,32 +12,33 @@ function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
-				<Nav defaultActiveKey="/log-time" as="ul">
+				<Nav defaultActiveKey="/log-time" as="ul" className="navbar fixed-top bg-dark">
 					<Nav.Item as="li">
-						<Nav.Link href="/log-time">Time Log</Nav.Link>
+						<Nav.Link href="/log-time" className="text-light">
+							<i className="bi bi-clock-history"></i> Time Log
+
+						</Nav.Link>
 					</Nav.Item>
 					<Nav.Item as="li">
-						<Nav.Link href="/people">People</Nav.Link>
+						<Nav.Link href="/people" className="text-light">
+							<i className="bi bi-people"></i> People
+						</Nav.Link>
 					</Nav.Item>
 					<Nav.Item as="li">
-						<Nav.Link href="/activities">Activities</Nav.Link>
+						<Nav.Link href="/activities" className="text-light">
+							<i className="bi bi-list-task"></i> Activities
+						</Nav.Link>
 					</Nav.Item>
 					<Nav.Item as="li">
-						<Nav.Link href="/places">Places</Nav.Link>
-					</Nav.Item>
-					<Nav.Item as="li">
-						<Nav.Link href="/counter">Counter</Nav.Link>
+						<Nav.Link href="/places" className="text-light">
+							<i className="bi bi-geo-alt"></i> Places
+						</Nav.Link>
 					</Nav.Item>
 				</Nav>
 				<Routes>
 					<Route
 						path="/log-time"
-						element={
-							<>
-								<LogTime />
-								<ViewLog />
-							</>
-						}
+						element={<ViewLog />}
 					/>
 					<Route path="/people" element={<People />} />
 					<Route path="/activities" element={<Activities />} />

@@ -49,9 +49,10 @@ export const EditableThing = (props: IEditableThing) => {
           </Form>
           :
           <div
+          onClick={onClickedEdit}
             className="d-flex justify-content-left w-100"
           >
-            <Button variant="link" className="p-1" onClick={onClickedEdit} >
+            <Button variant="link" className="p-1"  >
               <i className="bi bi-pencil"></i>
             </Button>
             <span className="ps-2">{text}</span>
