@@ -26,10 +26,17 @@ export const peopleSlice = createSlice({
         const id = randomUUID();
         state.peopleMap[id] = {...action.payload.person, id: id};
     },
+    updatePersonName: (state, action: {payload: {id: string, name: string}}) => {
+        state.peopleMap[action.payload.id]={...state.peopleMap[action.payload.id], name: action.payload.name};
+    },
+    deletePerson: (state, action: {payload: {id: string}}) => {
+      const { [action.payload.id]: _, ...rest } = state.peopleMap;
+      state.peopleMap = rest;
+    }
   }
 });
 
-export const { addPerson } = peopleSlice.actions;
+export const { addPerson, updatePersonName, deletePerson } = peopleSlice.actions;
 
 
 export const getAllPeople= (state: RootState) => {

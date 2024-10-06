@@ -6,6 +6,7 @@ import { BrowserRouter} from'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import { PersistGate } from 'redux-persist/integration/react';
 
 const container = document.getElementById('root')!;

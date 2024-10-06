@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
 import { IHaveId, IActivity } from '../../types';
 import { randomUUID } from '../helpers';
+import { stat } from 'fs';
 
 export interface ActivityState {
   activityMap:  {
@@ -26,10 +27,17 @@ export const activitySlice = createSlice({
         const id = randomUUID();
         state.activityMap[id] = {...action.payload.activity, id: id};
     },
+    updateDescription: (state, action: {payload: {id: string, description: string}}) => {
+        state.activityMap[action.payload.id]={...state.activityMap[action.payload.id], description: action.payload.description};
+    },
+    deleteActivity: (state, action: {payload: {id: string}}) => {
+      const { [action.payload.id]: _, ...rest } = state.activityMap;
+      state.activityMap = rest;
+    }
   }
 });
 
-export const { addActivity } = activitySlice.actions;
+export const { addActivity, updateDescription, deleteActivity } = activitySlice.actions;
 
 
 export const getAllActivities= (state: RootState) => {

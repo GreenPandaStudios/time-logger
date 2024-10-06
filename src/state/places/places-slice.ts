@@ -26,10 +26,17 @@ export const placesSlice = createSlice({
         const id = randomUUID();
         state.placesMap[id] = {...action.payload.place, id: id};
     },
+    updatePlaceDescription: (state, action: {payload: {id: string, description: string}}) => {
+        state.placesMap[action.payload.id]={...state.placesMap[action.payload.id], description: action.payload.description};
+    },
+    deletePlace: (state, action: {payload: {id: string}}) => {
+      const { [action.payload.id]: _, ...rest } = state.placesMap;
+      state.placesMap = rest;
+    }
   }
 });
 
-export const { addPlace } = placesSlice.actions;
+export const { addPlace, updatePlaceDescription, deletePlace } = placesSlice.actions;
 
 
 export const getAllPlaces= (state: RootState) => {

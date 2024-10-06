@@ -1,22 +1,28 @@
-import React,{useState, useCallback}  from 'react'
+import {useCallback, useMemo } from 'react'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
-import { Form, Button } from 'react-bootstrap'
-import { addPerson } from '../../state/people/people-slice'
+import { addPerson, getAllPeople, updatePersonName, deletePerson } from '../../state/people/people-slice'
+import { ThingHub } from '../../features'
 
 
 export const People = () => {
+  const people = useAppSelector(getAllPeople);
 
-    const [name, setName] = useState("");
-    const dispatch = useAppDispatch();
-    const onSubmit = useCallback(() => {
-        dispatch(addPerson({person: {name: name}}));
-        setName("");
-    },[name])
-  return (
-    <Form onSubmit={onSubmit}>
-        <textarea onChange={(event: React.ChangeEvent<HTMLTextAreaElement>)=>setName(event.target.value)}>
-        </textarea>
-        <Button type="submit" disabled={name===""}>Add New Person</Button>
-    </Form>
-  )
+  const things = useMemo(() => Object.values(people).map((person) =>
+    ({ id: person.id, userEnteredName: person.name })), [people]);
+
+  const dispatch = useAppDispatch();
+
+  const onCreate = useCallback((userEnteredName: string) => {
+    dispatch(addPerson({ person: { name: userEnteredName } }));
+  }, [dispatch]);
+
+  const onEdit = useCallback((id: string, newText: string) => {
+    dispatch(updatePersonName({ id, name: newText }));
+  }, [dispatch]);
+
+  const onDelete = useCallback((id: string) => {
+    dispatch(deletePerson({ id }));
+  }, [dispatch]);
+
+  return <ThingHub onEdit={onEdit} onDelete={onDelete} onCreate={onCreate} things={things} instructions='Enter the name of someone new ...'/>
 }
