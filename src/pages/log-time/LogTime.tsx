@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useMemo } from 'react'
 
-import { Form, Button, Container } from "react-bootstrap"
+import { Form, Button, Container, NavLink } from "react-bootstrap"
 import { IActivity, IPerson, IPlace, IExperience } from '../../types'
 import { ActivitySelect } from './ActivitySelect'
 import { PlaceSelect } from './PlaceSelect'
@@ -18,17 +18,18 @@ interface IExperienceLog {
 
 export const LogTime = () => {
 
+  const [currentActivity, setCurrentActivity] = useState<IActivity | undefined>(undefined);
+  const [currentPlace, setCurrentPlace] = useState<IPlace | undefined>(undefined);
+  const [currentPeople, setCurrentPeople] = useState<IPerson[]>([]);
 
-  const [currentExperience, setCurrentExperience] = useState<IExperienceLog>({})
-
-  const getCurrentAsExperience: IExperience = useMemo(() => {
+  const getCurrentAsExperience = useCallback((startTime?: number) => {
     return {
-      activity: currentExperience.activity,
-      place: currentExperience.place,
-      people: currentExperience.people,
-      start: Date.now()
+      activity: currentActivity,
+      place: currentPlace,
+      people: currentPeople,
+      start: startTime ?? Date.now()
     } as IExperience
-  }, [currentExperience])
+  }, [currentActivity, currentPlace, currentPeople])
 
 
 
@@ -36,62 +37,75 @@ export const LogTime = () => {
   const dispatch = useAppDispatch();
 
   const onActivityChange = useCallback((activity: IActivity) => {
-    setCurrentExperience({
-      ...currentExperience,
-      activity: activity
-    })
-  }, [currentExperience])
+    setCurrentActivity(activity)
+  }, [setCurrentActivity])
 
   const onPlaceChange = useCallback((place: IPlace) => {
-    setCurrentExperience({
-      ...currentExperience,
-      place: place
-    })
-  }, [currentExperience])
+    setCurrentPlace(place);
+  }, [setCurrentPlace])
 
   const onPeopleChange = useCallback((people: IPerson[]) => {
-    setCurrentExperience({
-      ...currentExperience,
-      people: people
-    })
-  }, [currentExperience.activity, currentExperience.place, currentExperience.people])
+    setCurrentPeople(people);
+  }, [setCurrentPeople])
 
   const canSubmit = useMemo(() => {
-    return currentExperience.activity !== undefined && currentExperience.place !== undefined;
-  }, [currentExperience.activity, currentExperience.place])
+    return currentActivity !== undefined && currentPlace !== undefined;
+  }, [currentActivity, currentPlace])
 
   const currentString: string | undefined = useMemo(() => {
 
 
-    let experienceString = `${currentExperience.activity?.description} at ${currentExperience.place?.description}`; 
+    let experienceString = `${currentActivity?.description} at ${currentPlace?.description}`; 
     
-    if (currentExperience.people && currentExperience.people.length > 0) {
-      let peopleString = currentExperience.people.map((person) => person.name).join(", ");
+    if (currentPeople && currentPeople.length > 0) {
+      let peopleString = currentPeople.map((person) => person.name).join(", ");
       experienceString += ` with ${peopleString}`;
     }
     return experienceString;
 
-  },[currentExperience]);
+  },[currentActivity, currentPlace, currentPeople]);
 
 
 
-  const onSubmit = useCallback(() => {
-    dispatch(addExperience({ experience: getCurrentAsExperience }))
-    setCurrentExperience({} as IExperienceLog);
-  }, [dispatch, addExperience, getCurrentAsExperience])
+  const onSubmit = useCallback((minutesAgo: number) => {
+
+    const startTime = Date.now() - minutesAgo * 60 * 1000;
+
+    dispatch(addExperience({ experience: getCurrentAsExperience(startTime)}))
+    setCurrentActivity(undefined);
+    setCurrentPlace(undefined);
+    setCurrentPeople([]);
+  }, [dispatch, addExperience, getCurrentAsExperience, setCurrentActivity, setCurrentPlace, setCurrentPeople])
 
   return (
-    <Form onSubmit={onSubmit}>
+    <>
       <ActivitySelect onChange={onActivityChange} />
       <PlaceSelect onChange={onPlaceChange} />
       <PersonSelect onChange={onPeopleChange} />
       <Container className="d-flex justify-content-center mt-3">
-        {canSubmit &&
-        <Button type="submit" disabled={!canSubmit} variant="outline-success" className="w-100">
-          <i className="bi bi-plus"></i> Log "{currentString}"
+        <Button onClick={()=>onSubmit(0)} disabled={!canSubmit} variant="success" className="w-100">
+          {canSubmit ? 
+          <><i className="bi bi-plus"></i> Log "{currentString}"</> : <>Select an activity and a place</>}
         </Button>
-    }
       </Container>
-    </Form>
+      <Container className="d-flex justify-content-center mt-3">
+      {canSubmit &&
+        <>
+        <Button onClick={()=>onSubmit(5)} disabled={!canSubmit} variant='outline-dark' className="w-100">
+          ...5 minutes ago
+        </Button>
+        <Button onClick={()=>onSubmit(15)} disabled={!canSubmit} variant="outline-dark" className="w-100">
+          ...15 minutes ago
+        </Button>
+        <Button onClick={()=>onSubmit(30)} disabled={!canSubmit} variant="outline-dark" className="w-100">
+          ...30 minutes ago
+        </Button>
+        <Button onClick={()=>onSubmit(60)} disabled={!canSubmit} variant="outline-dark" className="w-100">
+          ...60 minutes ago
+        </Button>
+        </>
+        }
+        </Container>
+    </>
   )
 }

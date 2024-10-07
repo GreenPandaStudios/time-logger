@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { IExperience, IHaveId } from "../../types";
-import { ListGroup } from "react-bootstrap";
+import { ListGroup, Button } from "react-bootstrap";
 
 interface IProps {
 	experience: IExperience & IHaveId;
@@ -35,15 +35,13 @@ export const ViewExperience = (props: IProps) => {
 	return (
 		<>
 			<ListGroup.Item>
+				{inProgress && <span>Since {new Date(experience.start).toLocaleTimeString()}, </span>}
 				{inProgress ? "I have been " : "I was "}
 				{experience.activity.description} at {experience.place.description}{" "}
-				{inProgress ? (
-					<span>since {new Date(experience.start).toLocaleTimeString()}</span>
-				) : (
+				{!inProgress &&
 					<span>{formatDuration(experience.start, experience.end)}</span>
-				)}
+				}
 				{experience.people && experience.people.length > 0 && ` with ${peopleString}`}
-				.
 			</ListGroup.Item>
 		</>
 	);

@@ -45,12 +45,28 @@ export const experienceSlice = createSlice({
         
         // When we add an experience at a time that is not the most recent, we need to sort the array of experiences on timestamp
         const lastExperience =  state.experiences.log[state.experiences.log.length - 2];
-        if (lastExperience && lastExperience.start > startTime.valueOf()) {
+        console.log("Last experience",  lastExperience.start);
+        console.log("Inserted experience", startTime.valueOf());
+        if (lastExperience && lastExperience.start < startTime.valueOf()) {
             state.experiences.log.sort((e1,e2) => (e1.start > e2.start ? 1 : -1));
             // Find our location and set the experience that came just before us's end time to our start time
             const index = state.experiences.log.indexOf(insertedExperience);
             if (index !== -1 && index !== 0) {
                 state.experiences.log[index - 1].end = insertedExperience.start;
+
+                // If this results in any experiences having negative duration, we need to remove them
+                for (let i = 0; i < state.experiences.log.length; i++) {
+                    if (state.experiences.log[i].start >= (state.experiences.log[i].end ?? state.experiences.log[i].start + 1)) {
+                        state.experiences.log.splice(i, 1);
+                    }
+                }
+
+                // Make sure all experiences that are not at the end have an end time
+                for (let i = 0; i < state.experiences.log.length - 2; i++) {
+                    if (state.experiences.log[i].end === undefined) {
+                        state.experiences.log[i].end = state.experiences.log[i + 1].start;
+                    }
+                }
             }
         }
         else if (lastExperience) {
