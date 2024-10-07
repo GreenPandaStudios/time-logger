@@ -31,8 +31,12 @@ div.App {
   .NavItem {
     display: flex;
     flex-direction: column;
+    min-height: 3rem;
+    text-align: center;
+    justify-content: center;
     a {
       text-decoration: none;
+     
     }
     width: calc(100vw / 4)
   }

@@ -12,37 +12,38 @@ function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
-				<Nav defaultActiveKey="/log-time" as="ul" className="NavBar bg-dark">
+				<Nav defaultActiveKey="/time-logger/log-time" as="ul" className="NavBar bg-dark">
 					<Nav.Item as="li" className="NavItem">
-						<NavLink to="/log-time" className="text-light">
+						<NavLink to="/time-logger/log-time" className="text-light">
 							<i className="bi bi-clock-history"></i> Time Log
 						</NavLink>
 					</Nav.Item>
 					<Nav.Item as="li" className="NavItem">
-						<NavLink to="/people" className="text-light">
+						<NavLink to="/time-logger/people" className="text-light">
 							<i className="bi bi-people"></i> People
 						</NavLink>
 					</Nav.Item>
 					<Nav.Item as="li" className="NavItem">
-						<NavLink to="/activities" className="text-light">
+						<NavLink to="/time-logger/activities" className="text-light">
 							<i className="bi bi-list-task"></i> Activities
 						</NavLink>
 					</Nav.Item>
 					<Nav.Item as="li" className="NavItem">
-						<NavLink to="/places" className="text-light">
+						<NavLink to="/time-logger/places" className="text-light">
 							<i className="bi bi-geo-alt"></i> Places
 						</NavLink>
 					</Nav.Item>
 				</Nav>
 				<Routes>
+					<Route path="/time-logger" element={<ViewLog />}/>
 					<Route
-						path="/log-time"
+						path="/time-logger/log-time"
 						element={<ViewLog />}
 					/>
-					<Route path="/people" element={<People />} />
-					<Route path="/activities" element={<Activities />} />
-					<Route path="/places" element={<Places />} />
-					<Route path="/counter" element={<Counter />} />
+					<Route path="/time-logger/people" element={<People />} />
+					<Route path="/time-logger/activities" element={<Activities />} />
+					<Route path="/time-logger/places" element={<Places />} />
+					<Route path="/time-logger/counter" element={<Counter />} />
 				</Routes>
 			</header>
 		</div>
