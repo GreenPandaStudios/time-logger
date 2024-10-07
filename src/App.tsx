@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "./logo.svg";
 import { Counter } from "./features/counter/Counter";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, NavLink } from "react-router-dom";
 import "./App.css";
 import { LogTime, People, Activities, Places } from "./pages";
 import { ViewLog } from "./pages/view-log";
@@ -14,24 +14,24 @@ function App() {
 			<header className="App-header">
 				<Nav defaultActiveKey="/log-time" as="ul" className="NavBar bg-dark">
 					<Nav.Item as="li" className="NavItem">
-						<Nav.Link href="/log-time" className="text-light">
+						<NavLink to="/log-time" className="text-light">
 							<i className="bi bi-clock-history"></i> Time Log
-						</Nav.Link>
+						</NavLink>
 					</Nav.Item>
 					<Nav.Item as="li" className="NavItem">
-						<Nav.Link href="/people" className="text-light">
+						<NavLink to="/people" className="text-light">
 							<i className="bi bi-people"></i> People
-						</Nav.Link>
+						</NavLink>
 					</Nav.Item>
 					<Nav.Item as="li" className="NavItem">
-						<Nav.Link href="/activities" className="text-light">
+						<NavLink to="/activities" className="text-light">
 							<i className="bi bi-list-task"></i> Activities
-						</Nav.Link>
+						</NavLink>
 					</Nav.Item>
 					<Nav.Item as="li" className="NavItem">
-						<Nav.Link href="/places" className="text-light">
+						<NavLink to="/places" className="text-light">
 							<i className="bi bi-geo-alt"></i> Places
-						</Nav.Link>
+						</NavLink>
 					</Nav.Item>
 				</Nav>
 				<Routes>
