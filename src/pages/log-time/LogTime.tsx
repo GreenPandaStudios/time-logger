@@ -73,9 +73,6 @@ export const LogTime = () => {
     const startTime = Date.now() - minutesAgo * 60 * 1000;
 
     dispatch(addExperience({ experience: getCurrentAsExperience(startTime)}))
-    setCurrentActivity(undefined);
-    setCurrentPlace(undefined);
-    setCurrentPeople([]);
   }, [dispatch, addExperience, getCurrentAsExperience, setCurrentActivity, setCurrentPlace, setCurrentPeople])
 
   return (
