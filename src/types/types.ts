@@ -16,8 +16,9 @@ export interface IPlace  {
 }
 
 export interface IExperience {
-    activity: IActivity;
-    place: IPlace;
+    activity?: IActivity;
+    place?: IPlace;
+    rating?: number;
     people: IPerson[];
     start: number;
     end?: number;

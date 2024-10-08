@@ -32,8 +32,6 @@ export const LogTime = () => {
   }, [currentActivity, currentPlace, currentPeople])
 
 
-
-
   const dispatch = useAppDispatch();
 
   const onActivityChange = useCallback((activity: IActivity) => {
@@ -49,13 +47,16 @@ export const LogTime = () => {
   }, [setCurrentPeople])
 
   const canSubmit = useMemo(() => {
-    return currentActivity !== undefined && currentPlace !== undefined;
-  }, [currentActivity, currentPlace])
+    return currentActivity !== undefined || currentPlace !== undefined || currentPeople.length > 0;
+  }, [currentActivity, currentPlace, currentPeople.length])
 
   const currentString: string | undefined = useMemo(() => {
 
 
-    let experienceString = `${currentActivity?.description} at ${currentPlace?.description}`; 
+    let experienceString = currentActivity?.description ?? "";
+    if (currentPlace?.description) {
+      experienceString += ` at ${currentPlace.description}`;
+    }
     
     if (currentPeople && currentPeople.length > 0) {
       let peopleString = currentPeople.map((person) => person.name).join(", ");
@@ -85,23 +86,23 @@ export const LogTime = () => {
       <Container className="d-flex justify-content-center mt-3">
         <Button onClick={()=>onSubmit(0)} disabled={!canSubmit} variant="success" className="w-100">
           {canSubmit ? 
-          <><i className="bi bi-plus"></i> Log "{currentString}"</> : <>Select an activity and a place</>}
+          <><i className="bi bi-plus"></i> {currentString}</> : <>Select an activity, place, or person</>}
         </Button>
       </Container>
       <Container className="d-flex justify-content-center mt-3">
       {canSubmit &&
         <>
         <Button onClick={()=>onSubmit(5)} disabled={!canSubmit} variant='outline-dark' className="w-100">
-          ...5 minutes ago
+          +5 minutes
         </Button>
         <Button onClick={()=>onSubmit(15)} disabled={!canSubmit} variant="outline-dark" className="w-100">
-          ...15 minutes ago
+          +15 minutes
         </Button>
         <Button onClick={()=>onSubmit(30)} disabled={!canSubmit} variant="outline-dark" className="w-100">
-          ...30 minutes ago
+          +30 minutes
         </Button>
         <Button onClick={()=>onSubmit(60)} disabled={!canSubmit} variant="outline-dark" className="w-100">
-          ...60 minutes ago
+          +60 minutes
         </Button>
         </>
         }

@@ -72,10 +72,21 @@ export const experienceSlice = createSlice({
             lastExperience.end = insertedExperience.start;
         }
     },
+    setRating(state, action: PayloadAction<{id: string, rating: number}>) {
+        const experience = {...
+            state.experiences.map[action.payload.id],
+            rating: action.payload.rating
+        };
+        state.experiences.map[action.payload.id] = experience;
+        const index = state.experiences.log.findIndex((e) => e.id === action.payload.id);
+        if (index !== -1) {
+            state.experiences.log[index] = experience;
+        }
+    }
   }
 });
 
-export const { addExperience } = experienceSlice.actions;
+export const { addExperience, setRating } = experienceSlice.actions;
 
 export const getExperience = (state: RootState, id: string) : (IExperience & IHaveId) | undefined=>  {
     const experience = state.experience.experiences.map[id] ?? undefined;
