@@ -62,10 +62,10 @@ export const experienceSlice = createSlice({
 
                 // Make sure all experiences that are not at the end have an end time
                 for (let i = 0; i < state.experiences.log.length - 2; i++) {
-                    if (state.experiences.map[state.experiences.log[i]].end === undefined) {
+                    
                         state.experiences.map[state.experiences.log[i]].end
                         = state.experiences.map[state.experiences.log[i + 1]].start;
-                    }
+                    
                 }
             }
         }
@@ -80,11 +80,22 @@ export const experienceSlice = createSlice({
             rating: action.payload.rating
         };
         state.experiences.map[action.payload.id] = experience;
+    },
+    deleteExperience(state, action: PayloadAction<{id: string}>) {
+        const { [action.payload.id]: _, ...rest } = state.experiences.map;
+        state.experiences.map = rest;
+        state.experiences.log = state.experiences.log.filter((id) => id !== action.payload.id);
+        for (let i = 0; i < state.experiences.log.length - 2; i++) {
+           
+                state.experiences.map[state.experiences.log[i]].end
+                = state.experiences.map[state.experiences.log[i + 1]].start;
+            
+        }
     }
   }
 });
 
-export const { addExperience, setRating } = experienceSlice.actions;
+export const { addExperience, setRating, deleteExperience } = experienceSlice.actions;
 
 export const getExperience = (state: RootState, id: string) : (IExperience & IHaveId) | undefined=>  {
     const experience = state.experience.experiences.map[id] ?? undefined;

@@ -1,6 +1,8 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { IExperience, IHaveId } from "../../types";
 import { ListGroup, Button } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { deleteExperience } from "../../state/experiences/experience-slice";
 
 interface IProps {
 	experience: IExperience & IHaveId;
@@ -8,8 +10,14 @@ interface IProps {
 }
 export const ViewExperience = (props: IProps) => {
 	const { experience, setRating } = props;
+	const dispatch = useDispatch();
 	const inProgress = experience.end === undefined;
-
+	const handleDelete = useCallback(() => {
+		dispatch(deleteExperience({id: experience.id}));
+	}, [
+		experience.id,
+		dispatch,
+	]);
 	const peopleString = useMemo(() => {
 		if (!experience.people || experience.people.length === 0) return "";
 
@@ -53,6 +61,11 @@ export const ViewExperience = (props: IProps) => {
 							<i className={"bi " + icon}></i>
 						</Button>
 					))}
+				</div>
+				<div className="d-flex justify-content-end mt-2">
+					<Button variant="link" className="p-1 text-danger" onClick={handleDelete}>
+						<i className="bi bi-trash"></i>
+					</Button>
 				</div>
 			</ListGroup.Item>
 		</>
