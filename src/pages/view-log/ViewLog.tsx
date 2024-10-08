@@ -10,9 +10,11 @@ import { setRating } from '../../state/experiences/experience-slice';
 export const ViewLog = () => {
     const dispatch = useDispatch();
     const experiences = useAppSelector(getAllExperiences);
+
     const handleSetRating = useCallback((id: string, rating: number) => {
         dispatch(setRating({id, rating}));
     }, [dispatch]);
+    
     const logView = useMemo(()=> {
         if (experiences.length === 0) {
             return null;

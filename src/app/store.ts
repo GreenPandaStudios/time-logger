@@ -1,10 +1,14 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
 import {experienceReducer} from '../state/experiences/experience-slice';
 import {placesReducer} from '../state/places/places-slice';
 import {personReducer} from "../state/people/people-slice";
 import {activityReducer} from "../state/activities/activity-slice";
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistStore, persistReducer, FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER, } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'
 
 const persistConfig = {
@@ -19,12 +23,17 @@ const persistedActivityReducer = persistReducer(persistConfig, activityReducer);
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
     experience: persistedExperienceReducer,
     places: persistedPlacesReducer,
     people: persistedPeopleReducer,
     activity: persistedActivityReducer
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
 
 export const persistor = persistStore(store);
