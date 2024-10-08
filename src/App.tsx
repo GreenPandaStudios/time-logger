@@ -12,28 +12,6 @@ function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
-				<Nav defaultActiveKey="/time-logger/log-time" as="ul" className="NavBar bg-dark">
-					<Nav.Item as="li" className="NavItem">
-						<NavLink to="/time-logger/log-time" className="text-light">
-							<i className="bi bi-clock-history"></i> Time Log
-						</NavLink>
-					</Nav.Item>
-					<Nav.Item as="li" className="NavItem">
-						<NavLink to="/time-logger/people" className="text-light">
-							<i className="bi bi-people"></i> People
-						</NavLink>
-					</Nav.Item>
-					<Nav.Item as="li" className="NavItem">
-						<NavLink to="/time-logger/activities" className="text-light">
-							<i className="bi bi-list-task"></i> Activities
-						</NavLink>
-					</Nav.Item>
-					<Nav.Item as="li" className="NavItem">
-						<NavLink to="/time-logger/places" className="text-light">
-							<i className="bi bi-geo-alt"></i> Places
-						</NavLink>
-					</Nav.Item>
-				</Nav>
 				<Routes>
 					<Route path="/time-logger" element={<ViewLog />}/>
 					<Route
@@ -45,6 +23,28 @@ function App() {
 					<Route path="/time-logger/places" element={<Places />} />
 					<Route path="/time-logger/counter" element={<Counter />} />
 				</Routes>
+				<Nav defaultActiveKey="/time-logger/log-time" as="ul" className="NavBar bg-dark">
+					<Nav.Item as="li" className={"NavItem"}>
+						<NavLink to="/time-logger/log-time" className={({ isActive }) => isActive ? "text-light text-decoration-underline" : "text-light"}>
+							<i className="bi bi-clock-history"></i> Time Log
+						</NavLink>
+					</Nav.Item>
+					<Nav.Item as="li" className="NavItem">
+						<NavLink to="/time-logger/people" className={({ isActive }) => isActive ? "text-light text-decoration-underline" : "text-light"}>
+							<i className="bi bi-people"></i> People
+						</NavLink>
+					</Nav.Item>
+					<Nav.Item as="li" className="NavItem">
+						<NavLink to="/time-logger/activities" className={({ isActive }) => isActive ? "text-light text-decoration-underline" : "text-light"}>
+							<i className="bi bi-list-task"></i> Activities
+						</NavLink>
+					</Nav.Item>
+					<Nav.Item as="li" className="NavItem">
+						<NavLink to="/time-logger/places" className={({ isActive }) => isActive ? "text-light text-decoration-underline" : "text-light"}>
+							<i className="bi bi-geo-alt"></i> Places
+						</NavLink>
+					</Nav.Item>
+				</Nav>
 			</header>
 		</div>
 	);
