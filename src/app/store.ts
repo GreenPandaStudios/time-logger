@@ -10,24 +10,24 @@ import { persistStore, persistReducer, FLUSH,
   PURGE,
   REGISTER, } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'
+import { combineReducers } from 'redux';
 
 const persistConfig = {
   key: 'root',
   storage,
 }
 
-const persistedExperienceReducer = persistReducer(persistConfig, experienceReducer) 
-const persistedPlacesReducer = persistReducer(persistConfig, placesReducer) 
-const persistedPeopleReducer = persistReducer(persistConfig, personReducer)
-const persistedActivityReducer = persistReducer(persistConfig, activityReducer);
+const rootReducer = combineReducers({
+  experience: experienceReducer,
+  places: placesReducer,
+  people: personReducer,
+  activity: activityReducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    experience: persistedExperienceReducer,
-    places: persistedPlacesReducer,
-    people: persistedPeopleReducer,
-    activity: persistedActivityReducer
-  },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

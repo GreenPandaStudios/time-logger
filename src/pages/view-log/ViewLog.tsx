@@ -6,6 +6,7 @@ import { ListGroup } from 'react-bootstrap';
 import { LogTime } from '../log-time';
 import { useDispatch } from 'react-redux';
 import { setRating } from '../../state/experiences/experience-slice';
+import {ExportImportData} from './ExportImportData';
 
 export const ViewLog = () => {
     const dispatch = useDispatch();
@@ -29,6 +30,7 @@ export const ViewLog = () => {
 
   return (
     <ListGroup>
+       <ExportImportData/>
       <ListGroup.Item>
         <LogTime/>
       </ListGroup.Item>
