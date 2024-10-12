@@ -22,4 +22,5 @@ export interface IExperience {
     people: IPerson[];
     start: number;
     end?: number;
+    journal?: string;
 }

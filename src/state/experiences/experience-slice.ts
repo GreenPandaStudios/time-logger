@@ -130,6 +130,12 @@ export const experienceSlice = createSlice({
             state.experiences.map[state.experiences.log[state.experiences.log.length - 1]].end = undefined;
         }
         
+    },
+    setJournal(state, action: PayloadAction<{id: string, journal: string}>) {
+        state.experiences.map[action.payload.id] = {...
+            state.experiences.map[action.payload.id],
+            journal: action.payload.journal
+        };
     }
   }
 });
@@ -137,7 +143,7 @@ export const experienceSlice = createSlice({
 
 
 
-export const { addExperience, setRating, deleteExperience, resolveUploadedData } = experienceSlice.actions;
+export const { addExperience, setRating, deleteExperience, resolveUploadedData, setJournal } = experienceSlice.actions;
 
 export const getExperience = (state: RootState, id: string) : (IExperience & IHaveId) | undefined=>  {
     const experience = state.experience.experiences.map[id] ?? undefined;

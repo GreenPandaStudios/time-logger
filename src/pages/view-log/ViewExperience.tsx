@@ -2,7 +2,8 @@ import React, { useCallback, useMemo } from "react";
 import { IExperience, IHaveId } from "../../types";
 import { ListGroup, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { deleteExperience } from "../../state/experiences/experience-slice";
+import { deleteExperience, setJournal } from "../../state/experiences/experience-slice";
+import { JournalEntry } from "./JournalEntry";
 
 interface IProps {
 	experience: IExperience & IHaveId;
@@ -18,6 +19,11 @@ export const ViewExperience = (props: IProps) => {
 		experience.id,
 		dispatch,
 	]);
+	
+	const handleSetJournal = useCallback((journal: string) => {
+		dispatch(setJournal({id: experience.id, journal}));
+	},[experience.id, dispatch]);
+
 
 	const date = new Date(experience.end ?? experience.start);
 	const isNewDay = experience.end ? new Date(experience.end).getDay() !== new Date(experience.start).getDay() : true;
@@ -65,6 +71,7 @@ export const ViewExperience = (props: IProps) => {
 						</Button>
 					))}
 				</div>
+				<JournalEntry entry={experience.journal} setEntry={handleSetJournal} />
 				<div className="d-flex justify-content-between align-items-center mt-2">
 					<div className="dateLabel">
 						{isNewDay && date.toLocaleDateString()}
@@ -73,6 +80,7 @@ export const ViewExperience = (props: IProps) => {
 						<i className="bi bi-trash"></i>
 					</Button>
 				</div>
+				
 			</ListGroup.Item>
 		</>
 	);
