@@ -23,5 +23,5 @@ export const Places = () => {
     dispatch(deletePlace({ id }));
   }, [dispatch]);
 
-  return <ThingHub  onDelete={onDelete}  onEdit={onEdit} onCreate={onCreate} things={things} instructions='Enter the name of a new place ...'/>;
+  return <ThingHub title="Places"  onDelete={onDelete}  onEdit={onEdit} onCreate={onCreate} things={things} instructions='Enter the name of a new place ...'/>;
 }

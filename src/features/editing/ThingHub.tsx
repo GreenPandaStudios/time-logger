@@ -10,6 +10,7 @@ interface IThing extends IHaveId {
 }
 
 interface IProps {
+    title: string;
     instructions?: string;
     things: IThing[];
     onEdit: (id: string, userEnteredName: string) => void;
@@ -31,6 +32,7 @@ export const ThingHub = (props: IProps) => {
     return (
         <div className="container mt-4">
             <div className="my-4"></div>
+            <h1>{props.title}</h1>
             <ListGroup className="mb-4">
                 {Object.values(things).map((thing) =>
                     <ListGroup.Item key={thing.id} className="d-flexalign-items-center">

@@ -9,7 +9,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-div.App {
+.App {
   height: 100vh;
   width: 100vw;
 }
@@ -23,6 +23,8 @@ div.App {
   display: flex;
   flex-direction: row; /* Ensure children are in a row */
   justify-content: space-between;
+  width: 100vw;
+  padding: 0;
 }
 .NavBar .NavItem {
   display: flex;
@@ -30,15 +32,21 @@ div.App {
   min-height: 3rem;
   text-align: center;
   justify-content: center;
-  width: 25vw;
+  padding: 0;
+  margin: auto;
 }
-.NavBar .NavItem a {
-  text-decoration: none;
+.NavBar .NavItem .NavButton {
+  color: white;
+  transition: all 0.3s ease-in-out; /* Added transition for smooth animation */
+}
+.NavBar .NavItem .NavButton.active {
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.8); /* Add a white glow */
+  transform: scale(1.25); /* Slightly scale up */
+  transform-origin: center; /* Ensure scaling is centered */
 }
 
 .dateLabel {
   color: rgba(0, 0, 0, 0.5);
-  font-size: medium;
 }
 
 .LogTime {
@@ -48,23 +56,18 @@ div.App {
   margin-bottom: 1rem; /* Added margin */
   padding: 1rem;
   transition: all 0.3s ease-in-out; /* Added transition for smooth animation */
-  width: 100%;
 }
 .LogTime:hover {
   border-color: rgb(0, 0, 0); /* Change border color on hover */
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Change box shadow on hover */
-  transform: scale(1.05); /* Slightly scale up on hover */
 }
 
 .ViewExperience {
-  display: flex;
-  flex-direction: column;
-  background-color: #f9f9f9; /* Light background color */
+  background-color: #ffffff; /* Light background color */
   border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  font-size: large; /* Reduce the font size */
 }
 .ViewExperience .ratingScale {
+  margin-top: 1rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -76,15 +79,16 @@ div.App {
   border-radius: 5px;
   cursor: pointer;
   padding: 0.5rem 1rem;
-  color: rgb(62, 62, 62);
+  color: rgb(52, 52, 52);
   transition: all 0.3s ease-in-out; /* Added transition for smooth animation */
 }
 .ViewExperience .ratingScale .ratingButton:hover {
-  background-color: #1d1d1d; /* Darken the background color on hover */
+  background-color: #b4b4b4; /* Darken the background color on hover */
+  color: rgb(0, 0, 0);
 }
 .ViewExperience .ratingScale .ratingButton.selected {
-  background-color: #28a745; /* Green color for active state */
-  color: white; /* White text color for active state */
-  box-shadow: 0 0 10px rgba(40, 167, 69, 0.5); /* Add a green glow */
-  transform: scale(1.05); /* Slightly scale up for active state */
+  background-color: #ffffff; /* Green color for active state */
+  color: rgb(0, 0, 0); /* White text color for active state */
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); /* Add a green glow */
+  transform: scale(1.15); /* Slightly scale up for active state */
 }/*# sourceMappingURL=index.css.map */

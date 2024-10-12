@@ -19,7 +19,7 @@ export const ViewExperience = (props: IProps) => {
 		dispatch,
 	]);
 
-	const date = new Date(experience.start);
+	const date = new Date(experience.end ?? experience.start);
 	const isNewDay = experience.end ? new Date(experience.end).getDay() !== new Date(experience.start).getDay() : true;
 
 	const peopleString = useMemo(() => {

@@ -24,5 +24,5 @@ export const People = () => {
     dispatch(deletePerson({ id }));
   }, [dispatch]);
 
-  return <ThingHub onEdit={onEdit} onDelete={onDelete} onCreate={onCreate} things={things} instructions='Enter the name of someone new ...'/>
+  return <ThingHub title="People" onEdit={onEdit} onDelete={onDelete} onCreate={onCreate} things={things} instructions='Enter the name of someone new ...'/>
 }

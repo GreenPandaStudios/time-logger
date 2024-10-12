@@ -81,7 +81,7 @@ export const LogTime = () => {
       <PlaceSelect onChange={onPlaceChange} />
       <PersonSelect onChange={onPeopleChange} />
       <Container className="d-flex justify-content-center mt-3">
-        <Button onClick={()=>onSubmit(0)} disabled={!canSubmit} variant="success" className="w-100">
+        <Button onClick={()=>onSubmit(0)} disabled={!canSubmit} variant="success">
           {canSubmit ? 
           <><i className="bi bi-plus"></i> {currentString}</> : <>Select an activity, place, or person</>}
         </Button>
@@ -89,16 +89,16 @@ export const LogTime = () => {
       <Container className="d-flex justify-content-center mt-3">
       {canSubmit &&
         <>
-        <Button onClick={()=>onSubmit(5)} disabled={!canSubmit} variant='outline-dark' className="w-100">
+        <Button onClick={()=>onSubmit(5)} disabled={!canSubmit} variant='outline-dark'>
           +5 minutes
         </Button>
-        <Button onClick={()=>onSubmit(15)} disabled={!canSubmit} variant="outline-dark" className="w-100">
+        <Button onClick={()=>onSubmit(15)} disabled={!canSubmit} variant="outline-dark">
           +15 minutes
         </Button>
-        <Button onClick={()=>onSubmit(30)} disabled={!canSubmit} variant="outline-dark" className="w-100">
+        <Button onClick={()=>onSubmit(30)} disabled={!canSubmit} variant="outline-dark">
           +30 minutes
         </Button>
-        <Button onClick={()=>onSubmit(60)} disabled={!canSubmit} variant="outline-dark" className="w-100">
+        <Button onClick={()=>onSubmit(60)} disabled={!canSubmit} variant="outline-dark">
           +60 minutes
         </Button>
         </>

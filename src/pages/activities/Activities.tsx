@@ -25,5 +25,5 @@ export const Activities = () => {
     dispatch(deleteActivity({ id }));
   }, [deleteActivity]);
 
-  return <ThingHub onEdit={onEdit} onDelete={onDelete} onCreate={onCreate} things={things} instructions='Enter a new activity ...'/>
+  return <ThingHub title="Activities" onEdit={onEdit} onDelete={onDelete} onCreate={onCreate} things={things} instructions='Enter a new activity ...'/>
 }

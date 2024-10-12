@@ -20,23 +20,23 @@ function App() {
 				{page === "places" && <Places />}
 				<Nav defaultActiveKey="/time-logger/log-time" as="ul" className="NavBar bg-dark">
 					<Nav.Item as="li" className={"NavItem"}>
-						<Button onClick={() => setPage("log-time")} variant="outline" className={page === "log-time" ? "text-light text-decoration-underline" : "text-light"}>
-							<i className="bi bi-clock-history"></i> Time Log
+						<Button onClick={() => setPage("log-time")} variant="outline" className={page === "log-time" ? "active NavButton" : "NavButton"}>
+							<i className="bi bi-clock-history"></i>
 						</Button>
 					</Nav.Item>
 					<Nav.Item as="li" className="NavItem">
-						<Button onClick={() => setPage("people")}  variant="outline" className={page === "people" ? "text-light text-decoration-underline" : "text-light"}>
-							<i className="bi bi-people"></i> People
+						<Button onClick={() => setPage("people")}  variant="outline" className={page === "people" ? "active NavButton" : "NavButton"}>
+							<i className="bi bi-people"></i>
 						</Button>
 					</Nav.Item>
 					<Nav.Item as="li" className="NavItem">
-						<Button onClick={() => setPage("activities")}  variant="outline" className={page === "activities" ? "text-light text-decoration-underline" : "text-light"}>
-							<i className="bi bi-list-task"></i> Activities
+						<Button onClick={() => setPage("activities")}  variant="outline" className={page === "activities" ? "active NavButton" : "NavButton"}>
+							<i className="bi bi-list-task"></i>
 						</Button>
 					</Nav.Item>
 					<Nav.Item as="li" className="NavItem">
-						<Button onClick={() => setPage("places")}  variant="outline" className={page === "places" ? "text-light text-decoration-underline" : "text-light"}>
-							<i className="bi bi-geo-alt"></i> Places
+						<Button onClick={() => setPage("places")}  variant="outline" className={page === "places" ? "active NavButton" : "NavButton" }>
+							<i className="bi bi-geo-alt"></i>
 						</Button>
 					</Nav.Item>
 				</Nav>
