@@ -22,6 +22,7 @@ export const ViewLog = () => {
         }
         return experiences.map((_,index) => {
             const experience = experiences[experiences.length - 1 - index];
+
             return <ViewExperience experience={experience} key={experience.id}
             setRating={(rating)=>handleSetRating(experience.id, rating)}/>
         })
@@ -31,9 +32,7 @@ export const ViewLog = () => {
   return (
     <ListGroup>
        <ExportImportData/>
-      <ListGroup.Item>
         <LogTime/>
-      </ListGroup.Item>
       {logView}
     </ListGroup>
   )

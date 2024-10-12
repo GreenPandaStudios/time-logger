@@ -18,6 +18,10 @@ export const ViewExperience = (props: IProps) => {
 		experience.id,
 		dispatch,
 	]);
+
+	const date = new Date(experience.start);
+	const isNewDay = experience.end ? new Date(experience.end).getDay() !== new Date(experience.start).getDay() : true;
+
 	const peopleString = useMemo(() => {
 		if (!experience.people || experience.people.length === 0) return "";
 
@@ -43,7 +47,7 @@ export const ViewExperience = (props: IProps) => {
 	
 	return (
 		<>
-			<ListGroup.Item>
+			<ListGroup.Item className="ViewExperience">
 				{inProgress && <span>Since {new Date(experience.start).toLocaleTimeString()}, </span>}
 				{inProgress ? "I have been " : "I was "}
 				{experience.activity && experience.activity.description} {experience.place && "at " + experience.place.description}{" "}
@@ -51,18 +55,20 @@ export const ViewExperience = (props: IProps) => {
 					<span>{formatDuration(experience.start, experience.end)}</span>
 				}
 				{experience.people && experience.people.length > 0 && ` with ${peopleString}`}
-				<div>
+				<div className="ratingScale">
 					{["bi-emoji-tear", "bi-emoji-frown", "bi-emoji-neutral", "bi-emoji-smile", "bi-emoji-grin"]
 					.map((icon, index) => (
 						<Button key={index}
-						variant={index === experience.rating ? "secondary" : "outline-secondary"}
-						size="lg" className="mx-2 my-1"
+						className={index === experience.rating ? "ratingButton selected" : "ratingButton"}
 						onClick={()=>setRating(index)}>
 							<i className={"bi " + icon}></i>
 						</Button>
 					))}
 				</div>
-				<div className="d-flex justify-content-end mt-2">
+				<div className="d-flex justify-content-between align-items-center mt-2">
+					<div className="dateLabel">
+						{isNewDay && date.toLocaleDateString()}
+					</div>
 					<Button variant="link" className="p-1 text-danger" onClick={handleDelete}>
 						<i className="bi bi-trash"></i>
 					</Button>

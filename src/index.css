@@ -34,4 +34,57 @@ div.App {
 }
 .NavBar .NavItem a {
   text-decoration: none;
+}
+
+.dateLabel {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: medium;
+}
+
+.LogTime {
+  border: 1px solid rgb(128, 128, 128); /* Changed to a gray color */
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(128, 128, 128, 0.5); /* Changed to a gray color */
+  margin-bottom: 1rem; /* Added margin */
+  padding: 1rem;
+  transition: all 0.3s ease-in-out; /* Added transition for smooth animation */
+  width: 100%;
+}
+.LogTime:hover {
+  border-color: rgb(0, 0, 0); /* Change border color on hover */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); /* Change box shadow on hover */
+  transform: scale(1.05); /* Slightly scale up on hover */
+}
+
+.ViewExperience {
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9; /* Light background color */
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  font-size: large; /* Reduce the font size */
+}
+.ViewExperience .ratingScale {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem; /* Add margin to the bottom */
+}
+.ViewExperience .ratingScale .ratingButton {
+  background-color: #ffffff; /* Light background color */
+  border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  color: rgb(62, 62, 62);
+  transition: all 0.3s ease-in-out; /* Added transition for smooth animation */
+}
+.ViewExperience .ratingScale .ratingButton:hover {
+  background-color: #1d1d1d; /* Darken the background color on hover */
+}
+.ViewExperience .ratingScale .ratingButton.selected {
+  background-color: #28a745; /* Green color for active state */
+  color: white; /* White text color for active state */
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.5); /* Add a green glow */
+  transform: scale(1.05); /* Slightly scale up for active state */
 }/*# sourceMappingURL=index.css.map */

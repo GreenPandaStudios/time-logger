@@ -76,7 +76,7 @@ export const LogTime = () => {
   }, [dispatch, addExperience, getCurrentAsExperience, setCurrentActivity, setCurrentPlace, setCurrentPeople])
 
   return (
-    <>
+    <div className="LogTime">
       <ActivitySelect onChange={onActivityChange} />
       <PlaceSelect onChange={onPlaceChange} />
       <PersonSelect onChange={onPeopleChange} />
@@ -104,6 +104,6 @@ export const LogTime = () => {
         </>
         }
         </Container>
-    </>
+    </div>
   )
 }
