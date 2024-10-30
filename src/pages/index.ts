@@ -3,3 +3,4 @@ export {LogTime} from "./log-time";
 export {People} from "./people";
 export {Activities} from "./activities";
 export {Places} from "./places";
+export {ChatPage} from "./chat";

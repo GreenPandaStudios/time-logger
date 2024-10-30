@@ -80,6 +80,13 @@ export const experienceSlice = createSlice({
         };
         state.experiences.map[action.payload.id] = experience;
     },
+    setCognitiveFunction(state, action: PayloadAction<{id: string, cognitiveFunction: number}>) {
+        const experience = {...
+            state.experiences.map[action.payload.id],
+            cognitiveFunction: action.payload.cognitiveFunction
+        };
+        state.experiences.map[action.payload.id] = experience
+    },
     deleteExperience(state, action: PayloadAction<{id: string}>) {
         const { [action.payload.id]: _, ...rest } = state.experiences.map;
         state.experiences.map = rest;
@@ -143,7 +150,7 @@ export const experienceSlice = createSlice({
 
 
 
-export const { addExperience, setRating, deleteExperience, resolveUploadedData, setJournal } = experienceSlice.actions;
+export const { addExperience, setRating, setCognitiveFunction, deleteExperience, resolveUploadedData, setJournal } = experienceSlice.actions;
 
 export const getExperience = (state: RootState, id: string) : (IExperience & IHaveId) | undefined=>  {
     const experience = state.experience.experiences.map[id] ?? undefined;

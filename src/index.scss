@@ -71,33 +71,86 @@ code {
 
 
 .ViewExperience {
-  background-color: #ffffff; /* Light background color */
-  border-radius: 5px;
+  background-color: #f0f0f0; /* Slightly darker background color for differentiation */
+  border-radius: 8px; /* Increased border radius for a more rounded look */
+  padding: 1rem; /* Added padding for spacing */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Added subtle shadow for depth */
+  margin-bottom: 1rem; /* Added margin at the bottom */
+  
+  .experienceText {
+    &::after {
+      content: "\"";
+    }
+    &::before {
+      content: "\"";
+    }
+    color: rgba(0, 0, 0, 0.8); /* Darker text color */
+    font-size: 1.1rem; /* Larger font size */
+    margin-bottom: 1rem; /* Added margin */
+    line-height: 1.6; /* Increase line height for readability */
+    padding: 1rem; /* Add padding for a more spacious look */
+    background-color: #f9f9f9; /* Light background color for a paper-like feel */
+    border-left: 4px solid #ccc; /* Add a subtle left border */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  }
 
   .ratingScale {
-    margin-top: 1rem;
+    padding-top: 1rem; /* Added margin at the top */
+    border-top: 1px solid rgba(0, 0, 0, 0.1); /* Add a subtle divider line */
+    margin-top: 0rem;
+    display: flex;
+    flex-direction: column;
+      
+    .ratingButtonWrapper {
+      justify-content: space-between;
+      margin: auto;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: row;
+      .ratingButton {
+        background-color: #ffffff; /* Light background color */
+        border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
+        border-radius: 5px;
+        margin-right: 0.25rem; /* Add margin to the right */
+        margin-left: 0.25rem;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        color: rgb(52, 52, 52);
+        transition: all 0.3s ease-in-out; /* Added transition for smooth animation */
+        &:hover {
+          background-color: #b4b4b4; /* Darken the background color on hover */
+          color: rgb(0, 0, 0);
+        }
+        &.selected {
+          background-color: #ffffff; /* Green color for active state */
+          color: rgb(0, 0, 0); /* White text color for active state */
+          box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); /* Add a green glow */
+          transform: scale(1.15); /* Slightly scale up for active state */
+        }
+    }
+    
+  }
+  p.ratingScaleTitle  {
+    margin: auto;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 1rem; /* Add margin to the bottom */
-    .ratingButton {
-      background-color: #ffffff; /* Light background color */
-      border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border */
-      border-radius: 5px;
-      cursor: pointer;
-      padding: 0.5rem 1rem;
-      color: rgb(52, 52, 52);
-      transition: all 0.3s ease-in-out; /* Added transition for smooth animation */
-      &:hover {
-        background-color: #b4b4b4; /* Darken the background color on hover */
-        color: rgb(0, 0, 0);
-      }
-      &.selected {
-        background-color: #ffffff; /* Green color for active state */
-        color: rgb(0, 0, 0); /* White text color for active state */
-        box-shadow: 0 0 3px rgba(0, 0, 0, 0.5); /* Add a green glow */
-        transform: scale(1.15); /* Slightly scale up for active state */
-      }
-    }
+    color: rgba(0, 0, 0, 0.6); /* Muted text color */
+    font-size: 0.9rem; /* Slightly smaller font size */
   }
+}
+
+.JournalEntry {
+  p.notesTitle {
+    padding-top: 1rem; /* Added margin at the top */
+    border-top: 1px solid rgba(0, 0, 0, 0.1); /* Add a subtle divider line */
+    justify-content: center;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    color: rgba(0, 0, 0, 0.6); /* Muted text color */
+    font-size: 0.9rem; /* Slightly smaller font size */
+  }
+}
+
+
 }

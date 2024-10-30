@@ -1,8 +1,7 @@
 import React from "react";
-import logo from "./logo.svg";
 import { Route, Routes, NavLink } from "react-router-dom";
 import "./App.css";
-import { LogTime, People, Activities, Places } from "./pages";
+import { LogTime, People, Activities, Places, ChatPage } from "./pages";
 import { ViewLog } from "./pages/view-log";
 import { Nav, Button } from "react-bootstrap";
 
@@ -18,6 +17,7 @@ function App() {
 				{page === "people" && <People />}
 				{page === "activities" && <Activities />}
 				{page === "places" && <Places />}
+				{page === "chat" && <ChatPage/>}
 				<Nav defaultActiveKey="/time-logger/log-time" as="ul" className="NavBar bg-dark">
 					<Nav.Item as="li" className={"NavItem"}>
 						<Button onClick={() => setPage("log-time")} variant="outline" className={page === "log-time" ? "active NavButton" : "NavButton"}>
@@ -37,6 +37,11 @@ function App() {
 					<Nav.Item as="li" className="NavItem">
 						<Button onClick={() => setPage("places")}  variant="outline" className={page === "places" ? "active NavButton" : "NavButton" }>
 							<i className="bi bi-geo-alt"></i>
+						</Button>
+					</Nav.Item>
+					<Nav.Item as="li" className="NavItem">
+						<Button onClick={() => setPage("chat")}  variant="outline" className={page === "chat" ? "active NavButton" : "NavButton" }>
+							<i className="bi bi-chat-dots"></i>
 						</Button>
 					</Nav.Item>
 				</Nav>

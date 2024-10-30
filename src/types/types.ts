@@ -19,6 +19,7 @@ export interface IExperience {
     activity?: IActivity;
     place?: IPlace;
     rating?: number;
+    cognitiveFunction?: number;
     people: IPerson[];
     start: number;
     end?: number;

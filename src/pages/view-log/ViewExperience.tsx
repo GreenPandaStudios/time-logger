@@ -4,17 +4,22 @@ import { ListGroup, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { deleteExperience, setJournal } from "../../state/experiences/experience-slice";
 import { JournalEntry } from "./JournalEntry";
+import RatingScale from "./RatingScale";
 
 interface IProps {
 	experience: IExperience & IHaveId;
 	setRating: (rating: number) => void;
+	setCognitiveFunction: (brainFunction: number) => void;
 }
 export const ViewExperience = (props: IProps) => {
-	const { experience, setRating } = props;
+	const { experience, setRating, setCognitiveFunction } = props;
 	const dispatch = useDispatch();
 	const inProgress = experience.end === undefined;
+
 	const handleDelete = useCallback(() => {
-		dispatch(deleteExperience({id: experience.id}));
+		if (window.confirm("Are you sure you want to delete this experience?")) {
+			dispatch(deleteExperience({id: experience.id}));
+		}
 	}, [
 		experience.id,
 		dispatch,
@@ -54,23 +59,28 @@ export const ViewExperience = (props: IProps) => {
 	return (
 		<>
 			<ListGroup.Item className="ViewExperience">
-				{inProgress && <span>Since {new Date(experience.start).toLocaleTimeString()}, </span>}
-				{inProgress ? "I have been " : "I was "}
-				{experience.activity && experience.activity.description} {experience.place && "at " + experience.place.description}{" "}
-				{!inProgress &&
-					<span>{formatDuration(experience.start, experience.end)}</span>
-				}
-				{experience.people && experience.people.length > 0 && ` with ${peopleString}`}
-				<div className="ratingScale">
-					{["bi-emoji-tear", "bi-emoji-frown", "bi-emoji-neutral", "bi-emoji-smile", "bi-emoji-grin"]
-					.map((icon, index) => (
-						<Button key={index}
-						className={index === experience.rating ? "ratingButton selected" : "ratingButton"}
-						onClick={()=>setRating(index)}>
-							<i className={"bi " + icon}></i>
-						</Button>
-					))}
+				<div className="experienceText">
+					{inProgress && <span>Since {new Date(experience.start).toLocaleTimeString()}, </span>}
+					{inProgress ? "I have been " : "I was "}
+					{experience.activity && experience.activity.description} {experience.place && "at " + experience.place.description}{" "}
+					{!inProgress &&
+						<span>{formatDuration(experience.start, experience.end)}</span>
+					}
+					{experience.people && experience.people.length > 0 && ` with ${peopleString}`}
 				</div>
+				
+				<RatingScale
+					title="How happy were you?"
+					icons={["bi-emoji-tear", "bi-emoji-frown", "bi-emoji-neutral", "bi-emoji-smile", "bi-emoji-grin"]}
+					selectedRating={experience.rating}
+					onRatingSelect={setRating}
+				/>
+				<RatingScale
+					title="How clear-headed were you?"
+					icons={["bi-1-circle-fill", "bi-2-circle-fill", "bi-3-circle-fill", "bi-4-circle-fill", "bi-5-circle-fill"]}
+					selectedRating={experience.cognitiveFunction}
+					onRatingSelect={setCognitiveFunction}
+				/>
 				<JournalEntry entry={experience.journal} setEntry={handleSetJournal} />
 				<div className="d-flex justify-content-between align-items-center mt-2">
 					<div className="dateLabel">
