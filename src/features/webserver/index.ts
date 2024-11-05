@@ -1,1 +1,1 @@
-export {makeRequest} from './utilities';
+export {makeRequest, streamText} from './utilities';

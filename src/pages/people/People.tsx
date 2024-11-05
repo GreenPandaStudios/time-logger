@@ -1,4 +1,4 @@
-import {useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { addPerson, getAllPeople, updatePersonName, deletePerson } from '../../state/people/people-slice'
 import { ThingHub } from '../../features'
@@ -24,5 +24,5 @@ export const People = () => {
     dispatch(deletePerson({ id }));
   }, [dispatch]);
 
-  return <ThingHub title="People" onEdit={onEdit} onDelete={onDelete} onCreate={onCreate} things={things} instructions='Enter the name of someone new ...'/>
+  return <ThingHub title="People" onEdit={onEdit} onDelete={onDelete} onCreate={onCreate} things={things} instructions='Enter the name of someone new ...' />
 }

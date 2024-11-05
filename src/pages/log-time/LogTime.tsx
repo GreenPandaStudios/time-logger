@@ -7,6 +7,7 @@ import { PlaceSelect } from './PlaceSelect'
 import { PersonSelect } from './PersonSelect'
 import { useAppDispatch } from '../../app/hooks'
 import { addExperience } from '../../state/experiences/experience-slice'
+import { useLocation } from '../../features/location'
 
 interface IExperienceLog {
   activity?: IActivity;
@@ -21,15 +22,16 @@ export const LogTime = () => {
   const [currentActivity, setCurrentActivity] = useState<IActivity | undefined>(undefined);
   const [currentPlace, setCurrentPlace] = useState<IPlace | undefined>(undefined);
   const [currentPeople, setCurrentPeople] = useState<IPerson[]>([]);
-
+  const { location } = useLocation();
   const getCurrentAsExperience = useCallback((startTime?: number) => {
     return {
       activity: currentActivity,
       place: currentPlace,
       people: currentPeople,
-      start: startTime ?? Date.now()
+      start: startTime ?? Date.now(),
+      coordinates: location ?? undefined
     } as IExperience
-  }, [currentActivity, currentPlace, currentPeople])
+  }, [currentActivity, currentPlace, currentPeople, location])
 
 
   const dispatch = useAppDispatch();
@@ -57,14 +59,14 @@ export const LogTime = () => {
     if (currentPlace?.description) {
       experienceString += ` at ${currentPlace.description}`;
     }
-    
+
     if (currentPeople && currentPeople.length > 0) {
       let peopleString = currentPeople.map((person) => person.name).join(", ");
       experienceString += ` with ${peopleString}`;
     }
     return experienceString;
 
-  },[currentActivity, currentPlace, currentPeople]);
+  }, [currentActivity, currentPlace, currentPeople]);
 
 
 
@@ -72,7 +74,7 @@ export const LogTime = () => {
 
     const startTime = Date.now() - minutesAgo * 60 * 1000;
 
-    dispatch(addExperience({ experience: getCurrentAsExperience(startTime)}))
+    dispatch(addExperience({ experience: getCurrentAsExperience(startTime) }))
   }, [dispatch, addExperience, getCurrentAsExperience, setCurrentActivity, setCurrentPlace, setCurrentPeople])
 
   return (
@@ -81,29 +83,29 @@ export const LogTime = () => {
       <PlaceSelect onChange={onPlaceChange} />
       <PersonSelect onChange={onPeopleChange} />
       <Container className="d-flex justify-content-center mt-3">
-        <Button onClick={()=>onSubmit(0)} disabled={!canSubmit} variant="success">
-          {canSubmit ? 
-          <><i className="bi bi-plus"></i> {currentString}</> : <>Select an activity, place, or person</>}
+        <Button onClick={() => onSubmit(0)} disabled={!canSubmit} variant="success">
+          {canSubmit ?
+            <><i className="bi bi-plus"></i> {currentString}</> : <>Select an activity, place, or person</>}
         </Button>
       </Container>
       <Container className="d-flex justify-content-center mt-3">
-      {canSubmit &&
-        <>
-        <Button onClick={()=>onSubmit(5)} disabled={!canSubmit} variant='outline-dark'>
-          +5 minutes
-        </Button>
-        <Button onClick={()=>onSubmit(15)} disabled={!canSubmit} variant="outline-dark">
-          +15 minutes
-        </Button>
-        <Button onClick={()=>onSubmit(30)} disabled={!canSubmit} variant="outline-dark">
-          +30 minutes
-        </Button>
-        <Button onClick={()=>onSubmit(60)} disabled={!canSubmit} variant="outline-dark">
-          +60 minutes
-        </Button>
-        </>
+        {canSubmit &&
+          <>
+            <Button onClick={() => onSubmit(5)} disabled={!canSubmit} variant='outline-dark'>
+              +5 minutes
+            </Button>
+            <Button onClick={() => onSubmit(15)} disabled={!canSubmit} variant="outline-dark">
+              +15 minutes
+            </Button>
+            <Button onClick={() => onSubmit(30)} disabled={!canSubmit} variant="outline-dark">
+              +30 minutes
+            </Button>
+            <Button onClick={() => onSubmit(60)} disabled={!canSubmit} variant="outline-dark">
+              +60 minutes
+            </Button>
+          </>
         }
-        </Container>
+      </Container>
     </div>
   )
 }
