@@ -7,6 +7,7 @@ import { IHaveId } from '../../types';
 
 interface IThing extends IHaveId {
     userEnteredName: string;
+    notes?: string;
 }
 
 interface IProps {
@@ -16,10 +17,11 @@ interface IProps {
     onEdit: (id: string, userEnteredName: string) => void;
     onDelete: (id: string) => void;
     onCreate: (userEnteredName: string) => void;
+    onNotes?: (id: string, notes: string) => void;
 }
 
 export const ThingHub = (props: IProps) => {
-    const { things, onEdit, onDelete, onCreate, instructions } = props;
+    const { things, onEdit, onDelete, onCreate, instructions, onNotes } = props;
     const [name, setThingName] = useState("");
 
     const onSubmit = useCallback((e: FormEvent) => {
@@ -36,9 +38,10 @@ export const ThingHub = (props: IProps) => {
             <ListGroup className="mb-4">
                 {Object.values(things).map((thing) =>
                     <ListGroup.Item key={thing.id} className="d-flexalign-items-center">
-                        <EditableThing oldText={thing.userEnteredName} id={thing.id}
+                        <EditableThing oldText={thing.userEnteredName} id={thing.id} oldNotes={thing.notes}
                             onEdit={onEdit}
-                            onDelete={onDelete} />
+                            onDelete={onDelete}
+                            onNotes={onNotes} />
                     </ListGroup.Item>)}
                 <ListGroup.Item>
                     <Form onSubmit={onSubmit} className="d-flex">

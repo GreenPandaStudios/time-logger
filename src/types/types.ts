@@ -8,6 +8,7 @@ export interface IActivity {
 
 export interface IPerson {
 	name: string;
+	notes?: string;
 }
 
 export interface IPlace {
